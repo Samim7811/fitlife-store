@@ -330,17 +330,22 @@ export default function Home() {
 
       <section className="trust">{trust.map(([i,t,d]) => <div className="trustCard" key={t}><div className="trustIcon">{i}</div><div className="trustTitle">{t}</div><div className="trustText">{d}</div></div>)}</section>
 
-      <section className="section">
-        <div className="eyebrow">EVERYTHING YOU NEED</div><h2>WHAT'S INSIDE THE KIT?</h2><p className="lead">5 essential fitness products in one complete kit.</p>
-        <div className="products">{products.map(([n,d,img]) => <div className="product" key={n}><img src={img} alt={n}/><div className="productInfo"><b>{n}</b><small>{d}</small></div></div>)}</div>
-      </section>
-
       <section className="section alt">
-        <div className="eyebrow">SIMPLE TO USE</div><h2>HOW TO USE</h2>
-        <div className="howGrid">{[1,2,3].map(n => <div className="how" key={n}><img src={`/how-to-use-${n}.jpg`} alt={`How to use ${n}`}/><div><b>STEP {n}</b><br/>Follow the simple workout instructions.</div></div>)}</div>
-      </section>
+  <div className="eyebrow">SIMPLE TO USE</div>
+  <h2>HOW TO USE</h2>
+  <p className="lead">
+    Follow the simple instructions for every product in your FitLife Home Fitness Kit.
+  </p>
 
-      <section className="section">
+  <div className="howLongImage">
+    <img
+      src="/images/how-to-use.png"
+      alt="How to use FitLife Home Fitness Kit"
+    />
+  </div>
+</section>
+
+<section className="section">
         <div className="eyebrow">RESULTS</div><h2>TRAIN. IMPROVE. REPEAT.</h2>
         <div className="resultGrid">{[1,2,3].map(n => <div className="result" key={n}><img src={`/result-${n}.jpg`} alt={`Fitness result ${n}`}/></div>)}</div>
       </section>
