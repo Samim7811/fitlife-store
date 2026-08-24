@@ -328,11 +328,6 @@ export default function Home() {
 
       <section className="offer"><div className="eyebrow">LIMITED TIME PRICE</div><div className="old">₹2,349</div><div className="price">₹949</div><div className="save">YOU SAVE ₹1,400</div></section>
 
-      <section className="plans">
-        <div className="plan"><h3>SINGLE KIT</h3><div className="amount">₹949</div></div>
-        <div className="plan"><h3>2 KITS</h3><div className="amount">₹1,698</div><div className="green">₹849 per kit</div></div>
-      </section>
-
       <section className="trust">{trust.map(([i,t,d]) => <div className="trustCard" key={t}><div className="trustIcon">{i}</div><div className="trustTitle">{t}</div><div className="trustText">{d}</div></div>)}</section>
 
       <section className="section">
