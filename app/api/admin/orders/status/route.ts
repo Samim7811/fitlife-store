@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabase-server";
+import { getSupabaseAdmin } from "@/lib/supabase-server";
 
 const ALLOWED_STATUSES = [
   "Pending",
@@ -41,7 +41,7 @@ export async function PATCH(request: NextRequest) {
       );
     }
 
-    const { data: existingOrder, error: findError } = await supabaseAdmin
+    const { data: existingOrder, error: findError } = await getSupabaseAdmin()
       .from("orders")
       .select("id, status")
       .eq("id", orderId)
@@ -57,7 +57,7 @@ export async function PATCH(request: NextRequest) {
       );
     }
 
-    const { data: updatedOrder, error: updateError } = await supabaseAdmin
+    const { data: updatedOrder, error: updateError } = await getSupabaseAdmin()
       .from("orders")
       .update({
         status,
@@ -93,7 +93,7 @@ export async function PATCH(request: NextRequest) {
       );
     }
 
-    const { error: historyError } = await supabaseAdmin
+    const { error: historyError } = await getSupabaseAdmin()
       .from("order_status_history")
       .insert({
         order_id: existingOrder.id,

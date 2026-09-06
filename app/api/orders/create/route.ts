@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabase-server";
+import { getSupabaseAdmin } from "@/lib/supabase-server";
 
 const PRODUCT_NAME = "5 in 1 Home Fitness Kit";
 
@@ -64,7 +64,7 @@ export async function POST(request: Request) {
 
     let orderId = generateOrderId();
 
-    let { data: existingOrder } = await supabaseAdmin
+    let { data: existingOrder } = await getSupabaseAdmin()
       .from("orders")
       .select("id")
       .eq("tracking_number", orderId)
@@ -73,7 +73,7 @@ export async function POST(request: Request) {
     while (existingOrder) {
       orderId = generateOrderId();
 
-      const result = await supabaseAdmin
+      const result = await getSupabaseAdmin()
         .from("orders")
         .select("id")
         .eq("tracking_number", orderId)
@@ -82,7 +82,7 @@ export async function POST(request: Request) {
       existingOrder = result.data;
     }
 
-    const { data: order, error } = await supabaseAdmin
+    const { data: order, error } = await getSupabaseAdmin()
       .from("orders")
       .insert({
         user_id: null,

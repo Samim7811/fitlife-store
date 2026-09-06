@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabase-server";
+import { getSupabaseAdmin } from "@/lib/supabase-server";
 
 const ALLOWED_STATUSES = [
   "Pending",
@@ -54,7 +54,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const { data: order, error } = await supabaseAdmin
+    const { data: order, error } = await getSupabaseAdmin()
       .from("orders")
       .select(
         `
@@ -106,7 +106,7 @@ export async function POST(request: Request) {
       ? order.status
       : "Pending";
 
-    const { data: history, error: historyError } = await supabaseAdmin
+    const { data: history, error: historyError } = await getSupabaseAdmin()
       .from("order_status_history")
       .select("status, note, created_at")
       .eq("order_id", order.id)
