@@ -138,11 +138,13 @@ export default function Home() {
   async function placeOrder(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (loading) return;
+
     setLoading(true);
     setError("");
 
     const f = new FormData(e.currentTarget);
-    const customer_name = String(f.get("name") || "").trim();
+
+    const customerName = String(f.get("name") || "").trim();
     const phone = phone10(String(f.get("phone") || ""));
     const address = String(f.get("address") || "").trim();
     const city = String(f.get("city") || "").trim();
@@ -150,54 +152,82 @@ export default function Home() {
     const pincode = String(f.get("pincode") || "").trim();
     const landmark = String(f.get("landmark") || "").trim();
 
-    if (!customer_name || !address || !city || !state) {
+    if (!customerName || !address || !city || !state) {
       setError("Please fill every required field.");
       setLoading(false);
       return;
     }
+
     if (!/^[6-9]\d{9}$/.test(phone)) {
       setError("Please enter a valid 10-digit Indian mobile number.");
       setLoading(false);
       return;
     }
+
     if (!/^\d{6}$/.test(pincode)) {
       setError("Please enter a valid 6-digit pincode.");
       setLoading(false);
       return;
     }
 
-    const payload = {
-      order_id: newOrderId(),
-      customer_name,
-      phone,
-      address,
-      city,
-      state,
-      pincode,
-      landmark: landmark || null,
-      product_name: "FitLife Home Fitness Kit 5 in 1",
-      quantity: offer.qty,
-      unit_price: offer.unit,
-      total_amount: offer.total,
-      payment_method: "Cash on Delivery",
-      status: "Pending",
-    };
+    try {
+      const response = await fetch("/api/orders/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          customerName,
+          phone,
+          address,
+          city,
+          state,
+          pincode,
+          landmark: landmark || null,
+          offerType: offer.qty === 2 ? "2 KITS" : "SINGLE KIT",
+          quantity: offer.qty,
+        }),
+      });
 
-    const { data, error: dbError } = await supabase
-      .from("orders")
-      .insert(payload)
-      .select("*")
-      .single();
+      const result = await response.json();
 
-    setLoading(false);
+      if (!response.ok || !result.order) {
+        setError(result.error || "Order could not be placed. Please try again.");
+        setLoading(false);
+        return;
+      }
 
-    if (dbError || !data) {
-      setError(dbError?.message || "Order could not be placed. Please try again.");
-      return;
+      const order = result.order;
+
+      const successOrder: Order = {
+        id: order.id,
+        order_id: order.tracking_number,
+        customer_name: order.customer_name,
+        phone: order.phone,
+        address: order.address,
+        city: order.city,
+        state: order.state,
+        pincode: order.pincode,
+        landmark: landmark || null,
+        product_name: order.product_name,
+        quantity: order.quantity,
+        unit_price: offer.unit,
+        total_amount: Number(order.amount),
+        payment_method: order.payment_method,
+        status: order.status,
+        created_at: order.created_at,
+        updated_at: order.updated_at,
+      };
+
+      setLoading(false);
+      setCheckout(false);
+      setSuccess(successOrder);
+
+    } catch (err) {
+      console.error("ORDER CREATE ERROR:", err);
+      setError("Unable to place order. Please check your internet connection and try again.");
+      setLoading(false);
     }
-
-    setCheckout(false);
-    setSuccess(data as Order);
   }
 
   async function trackOrder(e: FormEvent<HTMLFormElement>) {
