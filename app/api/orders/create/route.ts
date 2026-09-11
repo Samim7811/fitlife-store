@@ -93,7 +93,6 @@ export async function POST(request: Request) {
         state,
         pincode,
         product_name: PRODUCT_NAME,
-        offer_type: offerType,
         quantity,
         total_amount,
         payment_method: "COD",
