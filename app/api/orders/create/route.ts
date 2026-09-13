@@ -28,6 +28,7 @@ export async function POST(request: Request) {
     const offerType = body.offerType === "bundle" ? "bundle" : "single";
 
     const quantity = offerType === "bundle" ? 2 : 1;
+  const unit_price = offerType === "bundle" ? 849 : 949;
     const total_amount = offerType === "bundle" ? 1698 : 949;
 
     if (!customerName || !phone || !address || !city || !state || !pincode) {
@@ -93,6 +94,7 @@ export async function POST(request: Request) {
         pincode,
         product_name: PRODUCT_NAME,
         quantity,
+      unit_price,
         total_amount,
         payment_method: "COD",
         status: "Pending",
@@ -103,6 +105,7 @@ export async function POST(request: Request) {
       })
       .select(
         "id, customer_name, phone, product_name, quantity, total_amount, payment_method, status, tracking_number, created_at"
+      unit_price,
       )
       .single();
 
@@ -127,6 +130,7 @@ export async function POST(request: Request) {
         customerName: order.customer_name,
         product: order.product_name,
         quantity: order.quantity,
+      unit_price,
         total_amount: order.total_amount,
         paymentMethod: order.payment_method,
         status: order.status,
