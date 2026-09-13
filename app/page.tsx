@@ -221,6 +221,7 @@ export default function Home() {
 
       setLoading(false);
       setCheckout(false);
+      localStorage.setItem("fitlife_last_order", JSON.stringify(successOrder));
       setSuccess(successOrder);
 
     } catch (err) {
