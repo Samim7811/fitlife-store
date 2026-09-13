@@ -201,7 +201,7 @@ export default function Home() {
 
       const successOrder: Order = {
         id: order.id,
-        order_id: order.tracking_number,
+        order_id: order.orderId,
         customer_name: order.customer_name,
         phone: order.phone,
         address: order.address,
@@ -212,10 +212,10 @@ export default function Home() {
         product_name: order.product_name,
         quantity: order.quantity,
         unit_price: offer.unit,
-        total_amount: Number(order.amount),
-        payment_method: order.payment_method,
+        total_amount: Number(order.total_amount),
+        payment_method: order.paymentMethod,
         status: order.status,
-        created_at: order.created_at,
+        created_at: order.createdAt,
         updated_at: order.updated_at,
       };
 
