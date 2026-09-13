@@ -85,7 +85,6 @@ export async function POST(request: Request) {
     const { data: order, error } = await getSupabaseAdmin()
       .from("orders")
       .insert({
-        user_id: null,
         customer_name: customerName,
         phone: phoneDigits,
         address,
