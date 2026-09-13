@@ -469,12 +469,14 @@ export default function Home() {
       </div></div>}
 
       {myOrders && <div className="modal"><div className="modalBox">
-        <button className="close" onClick={() => setMyOrders(false)}>×</button><div className="eyebrow">ORDER HISTORY</div><h2>MY ORDERS</h2>
+        <button className="close" onClick={() => setMyOrders(false)}>×</button>{!selectedOrder && <><div className="eyebrow">ORDER HISTORY</div><h2>MY ORDERS</h2>
         <p className="lead" style={{fontSize:14}}>For privacy, enter the mobile number used for your orders.</p>
         <form className="trackForm" onSubmit={loadHistory}><input value={historyPhone} onChange={e => setHistoryPhone(e.target.value)} inputMode="numeric" maxLength={10} placeholder="Mobile number"/><button className="buy" disabled={historyLoading}>{historyLoading ? "LOADING..." : "VIEW ORDER HISTORY"}</button></form>
         {historyError && <div className="error">{historyError}</div>}
         {history.length > 0 && history.map(o => <div className="historyItem" key={o.order_id}><div><b>{o.order_id}</b><br/>{o.product_name}<br/>{money(Number(o.total_amount))}</div><div><span className="pill">{o.status}</span><br/><button className="viewAll" style={{padding:"7px 11px",marginTop:6}} onClick={() => setSelectedOrder(o)}>VIEW</button></div></div>)}
-        {selectedOrder && <div className="orderCard">
+        </>}
+
+{selectedOrder && <div className="orderCard">
           <div className="orderTop"><b>{selectedOrder.order_id}</b><span className="pill">{selectedOrder.status}</span></div>
           <p><b>{selectedOrder.customer_name}</b><br/>{selectedOrder.product_name}<br/>Qty: {selectedOrder.quantity}<br/>Total: {money(Number(selectedOrder.total_amount))}<br/>Payment: {selectedOrder.payment_method}<br/>Order date: {new Date(selectedOrder.created_at).toLocaleString("en-IN")}</p>
           {selectedOrder.status === "Cancelled" ? <div className="cancelled">❌ Cancelled</div> : <div className="timeline">{statuses.map((st,i) => <div key={st}><div className={`step ${i <= statusIndex(selectedOrder.status) ? "done" : ""}`}><div className="dot">{i <= statusIndex(selectedOrder.status) ? "✓" : ""}</div><div><b>{st === "Pending" ? "Order Placed" : st}</b></div></div>{i < statuses.length-1 && <div className="line"/>}</div>)}</div>}
