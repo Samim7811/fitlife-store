@@ -96,7 +96,7 @@ export async function POST(request: Request) {
         quantity,
         unit_price: quantity === 2 ? 849 : 949,
         total_amount,
-        payment_method: "COD",
+        payment_method: "Cash on Delivery",
         status: "Pending",
         tracking_number: orderId,
         admin_note: landmark
