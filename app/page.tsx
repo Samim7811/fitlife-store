@@ -359,7 +359,11 @@ export default function Home() {
 
       <header className="header">
         <div><div className="logo">Fit<span>Life</span></div><div className="sub">HOME FITNESS KIT</div></div>
-        <button className="track" onClick={() => { setMyOrders(true); setSelectedOrder(null); }}>MY ORDERS</button>
+        <button className="track" onClick={() => {
+  const saved = localStorage.getItem("fitlife_last_order");
+  setSelectedOrder(saved ? JSON.parse(saved) : null);
+  setMyOrders(true);
+}}>MY ORDERS</button>
       </header>
 
       <section className="hero">
