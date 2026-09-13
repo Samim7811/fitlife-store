@@ -105,7 +105,6 @@ export async function POST(request: Request) {
       })
       .select(
         "id, customer_name, phone, product_name, quantity, total_amount, payment_method, status, tracking_number, created_at"
-        unit_price: quantity === 2 ? 849 : 949,
       )
       .single();
 
@@ -130,7 +129,6 @@ export async function POST(request: Request) {
         customerName: order.customer_name,
         product: order.product_name,
         quantity: order.quantity,
-        unit_price: quantity === 2 ? 849 : 949,
         total_amount: order.total_amount,
         paymentMethod: order.payment_method,
         status: order.status,
