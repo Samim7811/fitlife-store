@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase-server";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
     const { data, error } = await getSupabaseAdmin()
@@ -9,18 +11,18 @@ export async function GET() {
         id,
         tracking_number,
         customer_name,
-        phone,
+        customer_phone:phone,
         address,
         city,
         state,
         pincode,
+        landmark,
         product_name,
-        offer_type,
         quantity,
-        amount,
+        unit_price,
+        total_amount,
         payment_method,
         status,
-        tracking_number,
         admin_note,
         created_at,
         updated_at
@@ -29,11 +31,11 @@ export async function GET() {
 
     if (error) {
       console.error("Admin orders error:", error);
-
       return NextResponse.json(
         {
           success: false,
-          message: "Unable to load orders.",
+          message: error.message,
+          orders: []
         },
         { status: 500 }
       );
@@ -41,7 +43,7 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
-      orders: data ?? [],
+      orders: data ?? []
     });
   } catch (error) {
     console.error("Unexpected admin orders error:", error);
@@ -50,6 +52,7 @@ export async function GET() {
       {
         success: false,
         message: "Something went wrong.",
+        orders: []
       },
       { status: 500 }
     );
